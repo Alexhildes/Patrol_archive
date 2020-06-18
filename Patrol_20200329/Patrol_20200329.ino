@@ -104,21 +104,19 @@ boolean auxTankEna40 = false;     //Aux tank enable, 40 litres
 
 int fuelRate = 2;         //Fuel rate is 2 litres per minute
 
-//Timer variables
-unsigned long startMillis;
-unsigned long currentMillis;
-
 //Reverse Camera relay
 int revCamera = 34;
 
 //Millis
-unsigned long previousMillis = 0;     
-unsigned long interval = 500; 
+unsigned long startMillis;  //some global variables available anywhere in the program
+unsigned long currentMillis;
+const unsigned long period = 250;  //the value is a number of milliseconds
 
 void setup() 
-{ 
+{
 
-  delay(100);
+  startMillis = millis();  //initial start time
+
   //Serial configurations
   Serial.begin(9600);          //Serial1 @ 9600 for Serial Monitor
   Serial2.begin(200000);       //Serial2 @ 200000 for Genie
@@ -169,28 +167,28 @@ void setup()
 } 
 void loop()
 {
+
   Serial.println("Loop Beginning");
 
-  unsigned long currentMillis = millis();
+  currentMillis = millis();  //get the current "time" (actually the number of milliseconds since the program started)
 
-  Serial.println("After Millis");
-  
-    if (currentMillis - previousMillis > interval) {
+  if (currentMillis - startMillis >= period)  //test whether the period has elapsed
+  {
+      Serial.println("Hello World!");
 
-        previousMillis = currentMillis;
         //Run the screen display loops
         
-        //tempSensors();            //Runs Temp Sensor Script
-        //oilPressure();            //Runs Oil Pressure Script
-        //batteryVoltage();         //Runs Battery Voltage Script           
-        //mapSensor();              //Runs Map Sensor Script
-        //dateTime();               //Runs dateTime() Script
-        //exhaustTemp();            //Runs exhaust temp script
+        tempSensors();            //Runs Temp Sensor Script
+        oilPressure();            //Runs Oil Pressure Script
+        batteryVoltage();         //Runs Battery Voltage Script           
+        mapSensor();              //Runs Map Sensor Script
+        dateTime();               //Runs dateTime() Script
+        exhaustTemp();            //Runs exhaust temp script
         
         genie.DoEvents();         //Check for events from Screen
   
         Serial.println("Main Loop");
-        
+        startMillis = currentMillis;  //IMPORTANT to save the start time of the current LED state.
     }
 }
   
