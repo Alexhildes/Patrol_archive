@@ -111,6 +111,9 @@ unsigned long currentMillis;
 //Reverse Camera relay
 int revCamera = 34;
 
+//Millis
+unsigned long previousMillis = 0;     
+unsigned long interval = 500; 
 
 void setup() 
 { 
@@ -158,37 +161,35 @@ void setup()
 
   //Screen Reset
   pinMode(RESETLINE, OUTPUT);  // Set D4 on Arduino to Output (4D Arduino Adaptor V2 - Display Reset)
-          digitalWrite(RESETLINE, 1);  // Reset the Display via D4
-          delay(2000);
-          digitalWrite(RESETLINE, 0);  // unReset the Display via D4
-          delay(5000); //let the display start up after the reset (This is important)
+  digitalWrite(RESETLINE, 1);  // Reset the Display via D4
+  delay(2000);
+  digitalWrite(RESETLINE, 0);  // unReset the Display via D4
+  delay(5000); //let the display start up after the reset (This is important)
     
 } 
 void loop()
 {
-  
-  static long waitPeriod = millis(); 
-  
-    if (millis() >= waitPeriod) {
+  Serial.println("Loop Beginning");
 
+  unsigned long currentMillis = millis();
 
+  Serial.println("After Millis");
+  
+    if (currentMillis - previousMillis > interval) {
+
+        previousMillis = currentMillis;
         //Run the screen display loops
         
-        tempSensors();            //Runs Temp Sensor Script
-        oilPressure();            //Runs Oil Pressure Script
-        batteryVoltage();         //Runs Battery Voltage Script           
-        mapSensor();              //Runs Map Sensor Script
-        dateTime();               //Runs dateTime() Script
-        exhaustTemp();            //Runs exhaust temp script
-        auxfuelTanks();            //Runs fuel tank scripts
+        //tempSensors();            //Runs Temp Sensor Script
+        //oilPressure();            //Runs Oil Pressure Script
+        //batteryVoltage();         //Runs Battery Voltage Script           
+        //mapSensor();              //Runs Map Sensor Script
+        //dateTime();               //Runs dateTime() Script
+        //exhaustTemp();            //Runs exhaust temp script
         
         genie.DoEvents();         //Check for events from Screen
   
         Serial.println("Main Loop");
-
-      
-      
-        waitPeriod = millis() + 200;   //200 millisecond loop
         
     }
 }
@@ -297,7 +298,7 @@ void mapSensor () {
 
 }
 
-void auxfuelTanks() {
+/*void auxfuelTanks() {
 
     currentMillis = millis();                                                                   //Get the current time
 
@@ -318,6 +319,7 @@ void auxfuelTanks() {
           }
 
 }
+*/
     
 // Event Handler for comms from Screen
  void myGenieEventHandler(void)
