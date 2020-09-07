@@ -110,7 +110,7 @@ int revCamera = 34;
 //Millis
 unsigned long startMillis;  //some global variables available anywhere in the program
 unsigned long currentMillis;
-const unsigned long period = 250;  //the value is a number of milliseconds
+const unsigned long period = 350;  //the value is a number of milliseconds
 
 void setup() 
 {
@@ -212,14 +212,14 @@ void oilPressure() {
     oil1= (25.0*((5.0*(analogRead(A2)/1023.0)) - 0.5)) - 2;         //Oil Pressure sensor in PSI (GREEN WIRE)
   
   
-  if (oil1 > 5) {
+  /*if (oil1 > 5) {
 
     digitalWrite(fuelPump, HIGH);  //Write high to turn fuel pump on
 
   } else {
 
     digitalWrite(fuelPump, LOW);
-  }
+  }*/
 
       //Writing to touch screen display
       genie.WriteObject(GENIE_OBJ_LED_DIGITS, 2, oil1);    //Displays Oil Press as Digits (Form 0)
